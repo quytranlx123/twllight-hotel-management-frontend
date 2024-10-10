@@ -7,15 +7,14 @@ import { AuthProvider } from './context/AuthContext';
 import Home from "./pages/Home"
 import RoomDetails from "./pages/RoomDetails";
 import Login from "./pages/Login";
-import Management from "./pages/Management";
 
 // react router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
 import UserProfile from "./pages/UserProfile";
-
+import { Dashboard } from "./pages/Dashboard";
 //test
-
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -45,8 +44,13 @@ const router = createBrowserRouter([
     element: <UserProfile />
   },
   {
-    path: "/management",
-    element: <Management />
+    path: "/dashboard",
+    element: <Dashboard />
+  }
+  ,
+  {
+    path: "/payment-success",
+    element: <PaymentSuccess />
   }
 ]);
 

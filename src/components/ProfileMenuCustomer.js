@@ -3,7 +3,7 @@ import React from "react";
 import useLogout from "../Recycle_Function/LogoutFunction";
 
 const ProfileMenuCustomer = () => {
-  const { handleLogout, isOpen, setIsOpen } = useLogout();
+  const { handleLogout, isOpen} = useLogout();
 
   if (!isOpen) return null;
 

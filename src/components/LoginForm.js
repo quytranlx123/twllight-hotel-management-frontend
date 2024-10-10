@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../Recycle_Function/Login";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -13,32 +14,22 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const response = await fetch("http://localhost:8000/api/login/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("role", data.role);
-      navigate("/"); // Điều hướng đến trang chính ngay sau khi đăng nhập thành công
+    
+    const result = await login(username, password, navigate);
+  
+    // Kiểm tra kết quả trả về từ hàm login
+    if (!result.success) {
+      setError(result.message);
     } else {
-      // Xử lý lỗi (ví dụ: hiển thị thông báo)
-      const errorData = await response.json();
-      setError(errorData.detail || "Đăng nhập không thành công.");
+      setError(null); // Xóa thông báo lỗi nếu đăng nhập thành công
     }
   };
 
   return (
-    <div>
+    <div className="flex justify-center items-center min-h-screen bg-transparent">
       <div className="bg-slate-800 border border-slate-600 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-lg bg-opacity-30 relative">
         <h1 className="text-4xl font-bold text-center mb-5">Login</h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="relative my-4">
             <input
@@ -73,13 +64,13 @@ const LoginForm = () => {
             Login
           </button>
           <button
-            type="button" // Thay đổi từ "onClick" thành "type='button'" để tránh gửi form
+            type="button" // Đảm bảo nút này không gửi form
             onClick={handleRegister}
-            className="w-full mb-4 mt-6 text-[18px] rounded bg-blue-500 py-2 hover:bg-blue-600 transition-colors duration-300"
+            className="w-full mb-4 text-[18px] rounded bg-blue-500 py-2 hover:bg-blue-600 transition-colors duration-300"
           >
-            Move to register
+            Move to Register
           </button>
-          <a href="http://127.0.0.1:8000/accounts/login/">
+          <a href="http://127.0.0.1:8000/accounts/login/" className="text-blue-300 text-center block mt-4">
             Đăng nhập với tư cách quản trị viên
           </a>
         </form>

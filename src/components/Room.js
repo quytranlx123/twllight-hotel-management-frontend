@@ -6,7 +6,7 @@ import { BsArrowsFullscreen, BsPeople } from "react-icons/bs";
 
 const Room = ({ room }) => {
   //destructive room
-  const { id, name, image, size, maxPerson, description, price } = room;
+  const { id, room_type, image, size, maxPerson, description} = room;
 
   return (
     <div className="bg-white shadow-2xl min-h-[500px] group">
@@ -48,13 +48,11 @@ const Room = ({ room }) => {
       </div>
       {/* name & description */}
       <div className="text-center">
-        <Link to={'/room/${id}'}>
-        <h3 className='h3'>{name}</h3>
-        </Link>
+        <h3 className='h3'>{room_type}</h3>
         <p className="max-w-[300px] mx-auto mb-3 lg:mb-6">{description.slice(0, 56)}</p>
       </div>
       {/* btn */}
-      <Link to={`/room/${id}`} className="btn btn-secondary btn-sm max-w-[240px] mx-auto ">Book now from ${price}</Link>
+      <Link to={`/room/${id}`} className="btn btn-secondary btn-sm max-w-[240px] py-8 mx-auto mb-9 text-center">View Details</Link>
     </div>
   );
 };

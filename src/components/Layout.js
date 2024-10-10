@@ -7,9 +7,12 @@ import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <Outlet />
+      {/* Nội dung chính */}
+      <main className="flex-grow">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

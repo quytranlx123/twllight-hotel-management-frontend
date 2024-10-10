@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import useLogout from "../Recycle_Function/LogoutFunction";
 
 
-const ProfileMenuEmployee = () => {
-  const { handleLogout, isOpen} = useLogout();
+const ProfileMenuManager = () => {
+  const { handleLogout, isOpen } = useLogout();
 
   if (!isOpen) return null;
 
@@ -25,4 +25,4 @@ const ProfileMenuEmployee = () => {
   );
 };
 
-export default ProfileMenuEmployee;
+export default ProfileMenuManager;

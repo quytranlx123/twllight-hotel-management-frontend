@@ -1,5 +1,7 @@
-module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+const withMT = require("@material-tailwind/react/utils/withMT");
+
+module.exports = withMT({
+  content: ['./src/**/*.{js,jsx,ts,tsx}'], // Cấu hình đúng cho các file nội dung
   theme: {
     fontFamily: {
       primary: 'Gilda Display',
@@ -31,4 +33,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+});

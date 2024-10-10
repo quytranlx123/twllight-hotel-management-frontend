@@ -7,8 +7,10 @@ import LogoWhite from "../assets/img/logo-white.svg";
 // menu người dùng
 import ProfileMenuCustomer from "./ProfileMenuCustomer";
 import ProfileMenuEmployee from "./ProfileMenuEmployee";
-// import ProfileMenuManager from "./ProfileMenuManager"; // Thêm menu cho manager
-import ProfileMenuWithoutAuthenticated from "./ProfileMenuWithoutAuthenticate";
+import ProfileMenuManager from "./ProfileMenuManager";
+import ProfileMenu from "./ProfileMenu";
+import ProfileMenuWithRoleNotFound from "./ProfileMenuRoleNotFound";
+import ProfileMenuAdmin from "./ProfileMenuAdmin"
 
 const Header = () => {
   const role = localStorage.getItem("role");
@@ -32,15 +34,29 @@ const Header = () => {
 
   // Sử dụng useMemo để lưu trữ component menu người dùng dựa trên role
   const profileMenu = useMemo(() => {
+    const validRoles = ["customer", "employee", "manager", "admin"];
+
+    // Nếu chưa có role (người dùng chưa đăng nhập)
+    if (!role) {
+      return <ProfileMenu />; // Component mặc định cho người dùng chưa đăng nhập
+    }
+
+    // Kiểm tra role
+    if (!validRoles.includes(role)) {
+      return <ProfileMenuWithRoleNotFound />;
+    }
+
     switch (role) {
       case "customer":
         return <ProfileMenuCustomer />;
       case "employee":
         return <ProfileMenuEmployee />;
-      // case "3":
-      //   return <ProfileMenuManager />;
+      case "manager":
+        return <ProfileMenuManager />;
+      case "admin":
+        return <ProfileMenuAdmin />;
       default:
-        return <ProfileMenuWithoutAuthenticated />;
+        return <ProfileMenuWithRoleNotFound />; // Trường hợp không hợp lệ
     }
   }, [role]);
 

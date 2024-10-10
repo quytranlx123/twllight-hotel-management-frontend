@@ -8,7 +8,7 @@ import {
   FaHotdog,
   FaStopwatch,
   FaCocktail,
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 export const RoomContext = createContext();
 
@@ -24,23 +24,30 @@ const RoomProvider = ({ children }) => {
   useEffect(() => {
     const fetchRoomData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/roomtypes/'); // Thay thế với URL của bạn
+        const response = await fetch("http://localhost:8000/api/roomtypes/"); // Thay thế với URL của bạn
         const apiData = await response.json();
 
         // Định dạng dữ liệu
-        const formattedData = apiData.map(room => ({
+        const formatText = (text) => {
+          return text
+            .split("_") // Tách chuỗi tại dấu gạch dưới
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Viết hoa chữ cái đầu mỗi từ
+            .join(" "); // Nối lại thành chuỗi với dấu cách
+        };
+
+        const formattedData = apiData.map((room) => ({
           id: room.id,
-          name: room.name,
+          room_type: formatText(room.room_type), // Sử dụng hàm formatText để định dạng tên phòng
           description: room.description,
           facilities: [
-            { name: 'Wifi', icon: <FaWifi /> },
-            { name: 'Coffee', icon: <FaCoffee /> },
-            { name: 'Bath', icon: <FaBath /> },
-            { name: 'Parking Space', icon: <FaParking /> },
-            { name: 'Swimming Pool', icon: <FaSwimmingPool /> },
-            { name: 'Breakfast', icon: <FaHotdog /> },
-            { name: 'GYM', icon: <FaStopwatch /> },
-            { name: 'Drinks', icon: <FaCocktail /> },
+            { name: "Wifi", icon: <FaWifi /> },
+            { name: "Coffee", icon: <FaCoffee /> },
+            { name: "Bath", icon: <FaBath /> },
+            { name: "Parking Space", icon: <FaParking /> },
+            { name: "Swimming Pool", icon: <FaSwimmingPool /> },
+            { name: "Breakfast", icon: <FaHotdog /> },
+            { name: "GYM", icon: <FaStopwatch /> },
+            { name: "Drinks", icon: <FaCocktail /> },
           ],
           size: room.area,
           maxPerson: room.capacity,
@@ -48,16 +55,13 @@ const RoomProvider = ({ children }) => {
           image: room.image,
           imageLg: room.image_bathroom,
         }));
-
         setRoomData(formattedData);
         setRooms(formattedData); // Thiết lập rooms với dữ liệu lấy từ API
       } catch (error) {
-        console.error('Error fetching room data:', error);
+        console.error("Error fetching room data:", error);
       }
     };
-
     fetchRoomData();
-    console.log()
   }, []); // Gọi hàm chỉ một lần khi component được mount
 
   // Cập nhật tổng số người khi adults hoặc kids thay đổi
@@ -72,7 +76,7 @@ const RoomProvider = ({ children }) => {
     const newRooms = roomData.filter((room) => {
       return total <= room.maxPerson;
     });
-    
+
     // Cập nhật state rooms
     setTimeout(() => {
       setRooms(newRooms);

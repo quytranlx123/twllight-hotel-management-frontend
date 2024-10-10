@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileMenuWithoutAuthenticated = () => {
+const ProfileMenu = () => {
   return (
     <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md p-4 w-[260px]">
       <a
@@ -37,4 +37,4 @@ const ProfileMenuWithoutAuthenticated = () => {
   );
 };
 
-export default ProfileMenuWithoutAuthenticated;
+export default ProfileMenu;
