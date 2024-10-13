@@ -28,11 +28,11 @@ const CheckIn = ({ onDateChange }) => {
       <DatePicker
         className="w-full h-full"  // Thêm khoảng cách để tránh chữ đè lên icon
         selected={startDate}              // Ngày đã chọn
-        placeholderText="Chọn ngày check-in"  // Văn bản placeholder
+        placeholderText="Check-in"  // Văn bản placeholder
         onChange={handleChange}           // Hàm xử lý khi ngày thay đổi
         minDate={new Date()}           // Giới hạn chỉ cho phép chọn ngày hiện tại và tương lai
         dateFormat="dd/MM/yyyy"           // Định dạng hiển thị ngày
-        aria-label="Ngày check-in"        // Nhãn truy cập cho người dùng công cụ hỗ trợ
+        aria-label="Ngày Check-in"        // Nhãn truy cập cho người dùng công cụ hỗ trợ
       />
     </div>
   );

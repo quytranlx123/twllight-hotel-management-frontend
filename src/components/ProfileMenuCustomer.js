@@ -3,15 +3,15 @@ import React from "react";
 import useLogout from "../Recycle_Function/LogoutFunction";
 
 const ProfileMenuCustomer = () => {
-  const { handleLogout, isOpen} = useLogout();
+  const { handleLogout, isOpen } = useLogout();
 
   if (!isOpen) return null;
 
   return (
     <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md p-4 w-[260px]">
       <Link
-        className="block px-5 py-3 text-gray-800 hover:bg-gray-100"
-        to="/user"
+        className=" font-sans-serif block px-5 py-3 text-gray-800 hover:bg-gray-100"
+        to="/customerdashboard"
       >
         Thông tin
       </Link>
@@ -27,12 +27,9 @@ const ProfileMenuCustomer = () => {
       >
         Trung tâm trợ giúp
       </Link>
-      <button
-        onClick={handleLogout}
-        className="block px-5 py-3 text-gray-800 hover:bg-gray-100 w-full text-left"
-      >
+      <Link className="block px-5 py-3 text-gray-800 hover:bg-gray-100" onClick={handleLogout}>
         Đăng xuất
-      </button>
+      </Link>
     </div>
   );
 };

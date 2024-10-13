@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
 
 // logo
-import LogoDark from "../assets/img/logo-dark.svg";
-import LogoWhite from "../assets/img/logo-white.svg";
+import LogoDark from "../assets/img/logo-dark.png";
+import LogoWhite from "../assets/img/logo-white.png";
 // menu người dùng
 import ProfileMenuCustomer from "./ProfileMenuCustomer";
 import ProfileMenuEmployee from "./ProfileMenuEmployee";
@@ -63,15 +63,15 @@ const Header = () => {
   return (
     <header
       className={`${
-        header ? "bg-white py-6 shadow-lg" : "bg-transparent py-8"
+        header ? "bg-white py-3 my-1 shadow-lg" : "bg-transparent py-2"
       } fixed z-50 w-full transition-all duration-500`}
     >
       <div className="container mx-auto flex flex-col items-center gap-y-6 lg:flex-row lg:justify-between lg:gap-y-0">
         {/* Logo */}
         <a href="/">
           <img
-            className="w-[160px]"
-            src={header ? LogoDark : LogoWhite}
+            className="w-[100px]"
+            src={header ? LogoWhite : LogoDark}
             alt="Logo"
           />
         </a>

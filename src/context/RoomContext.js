@@ -15,8 +15,8 @@ export const RoomContext = createContext();
 const RoomProvider = ({ children }) => {
   const [roomData, setRoomData] = useState([]);
   const [rooms, setRooms] = useState([]);
-  const [adults, setAdults] = useState("1 Adult");
-  const [kids, setKids] = useState("0 Kids");
+  const [adults, setAdults] = useState("1 Người lớn");
+  const [kids, setKids] = useState("0 Trẻ em");
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 

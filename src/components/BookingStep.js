@@ -4,6 +4,7 @@ import PaymentComponent from "./PaymentComponent";
 import AvailableRooms from "./AvailableRoom";
 import { UserIcon, BuildingLibraryIcon } from "@heroicons/react/24/outline";
 import { calculateDaysBetween } from "../Recycle_Function/calculateDaysBetween";
+
 // Initial form data
 const initialFormData = {
   customer: "",
@@ -17,6 +18,7 @@ const initialFormData = {
   roomType: "",
   check_in_date: "",
   check_out_date: "",
+  otp: "",
 };
 
 // Reusable Input component
@@ -30,6 +32,7 @@ const InputField = ({
   required,
 }) => (
   <div className="mb-4">
+    <label className="block text-sm font-medium mb-1">{label}</label>
     <input
       type={type}
       name={name}
@@ -37,7 +40,7 @@ const InputField = ({
       value={value}
       onChange={onChange}
       required={required}
-      className="border rounded p-2 w-full"
+      className="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
     />
   </div>
 );
@@ -55,7 +58,7 @@ const Step1 = ({ formData, onChange, errors, onSelectRoom }) => (
       required={true}
     />
     {errors.guest_firstname && (
-      <p className="text-red-500">{errors.guest_firstname}</p>
+      <p className="text-red-500 text-sm">{errors.guest_firstname}</p>
     )}
 
     <InputField
@@ -68,7 +71,7 @@ const Step1 = ({ formData, onChange, errors, onSelectRoom }) => (
       required={true}
     />
     {errors.guest_lastname && (
-      <p className="text-red-500">{errors.guest_lastname}</p>
+      <p className="text-red-500 text-sm">{errors.guest_lastname}</p>
     )}
 
     <InputField
@@ -80,7 +83,9 @@ const Step1 = ({ formData, onChange, errors, onSelectRoom }) => (
       placeholder="Địa chỉ email"
       required={true}
     />
-    {errors.guest_email && <p className="text-red-500">{errors.guest_email}</p>}
+    {errors.guest_email && (
+      <p className="text-red-500 text-sm">{errors.guest_email}</p>
+    )}
 
     <InputField
       label="Số điện thoại"
@@ -91,14 +96,16 @@ const Step1 = ({ formData, onChange, errors, onSelectRoom }) => (
       placeholder="Số điện thoại"
       required={true}
     />
-    {errors.guest_phone && <p className="text-red-500">{errors.guest_phone}</p>}
+    {errors.guest_phone && (
+      <p className="text-red-500 text-sm">{errors.guest_phone}</p>
+    )}
 
     <textarea
       name="notes"
       placeholder="Yêu cầu đặc biệt (không bắt buộc)"
       value={formData.notes}
       onChange={onChange}
-      className="border rounded p-2 w-full mb-4"
+      className="border rounded p-2 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
     />
 
     <div className="mb-4">
@@ -121,17 +128,41 @@ const Step1 = ({ formData, onChange, errors, onSelectRoom }) => (
 // Step 2: Confirmation Component
 const Step2 = ({ formData }) => (
   <div>
-    <h2 className="text-lg font-semibold">Xác nhận</h2>
-    <p>Vui lòng xem lại thông tin của bạn trước khi gửi.</p>
-    <pre className="overflow-x-auto">{JSON.stringify(formData, null, 2)}</pre>
+    <h2 className="text-lg font-semibold">Xác nhận thông tin</h2>
+    <p>Vui lòng xem lại thông tin của bạn trước khi gửi:</p>
+    <div className="bg-gray-100 p-4 rounded-md shadow">
+      {Object.entries(formData).map(([key, value]) => (
+        <div key={key} className="flex justify-between py-2">
+          <span className="font-medium">
+            {key.replace(/([A-Z])/g, " $1")}:{" "}
+          </span>
+          <span className="text-gray-700">{value}</span>
+        </div>
+      ))}
+    </div>
   </div>
 );
 
 // Step 3: Payment Component
-const Step3 = () => <PaymentComponent />;
+const Step3 = () => (
+  <div>
+    <PaymentComponent />
+  </div>
+);
 
 // Step 4: Success Component
-const Step4 = () => <div>Thanh toán thành công</div>;
+const Step4 = ({ formData, onChange }) => (
+  <div>
+    <input
+      type="text"
+      name="otp"
+      value={formData.otp}
+      onChange={onChange}
+      placeholder="Nhập mã OTP"
+      className="border rounded p-2 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+);
 
 // Step Label Component
 const StepLabel = ({
@@ -170,9 +201,6 @@ export function BookingStep({
   const [activeStep, setActiveStep] = useState(0);
   const [errors, setErrors] = useState({});
   const numberOfDays = calculateDaysBetween(startDate, endDate);
-  console.log(startDate)
-  console.log(endDate)
-  console.log(numberOfDays)
   const [formData, setFormData] = useState({
     ...initialFormData,
     check_in_date: startDate,
@@ -182,7 +210,6 @@ export function BookingStep({
     room_code: room.name,
     id,
   });
-
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleSelectRoom = (room) => {
@@ -199,90 +226,136 @@ export function BookingStep({
 
   const handleNext = async () => {
     const validationErrors = validateForm(formData);
+
+    // Check for validation errors
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
+      // Handling the steps accordingly
       if (activeStep === 2) {
-        // Gửi formData đến server
         try {
+          // Send OTP request
           const response = await fetch("http://localhost:8000/api/bookings/", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({
+              phone_number: formData.guest_phone,
+              guest_firstname: formData.guest_firstname,
+              guest_lastname: formData.guest_lastname,
+              guest_email: formData.guest_email,
+            }),
           });
+
+          if (response.ok) {
+            setSuccessMessage("Đã gửi yêu cầu xác nhận OTP!");
+            setActiveStep(3); // Move to OTP confirmation step
+          } else {
+            const errorResponse = await response.json();
+            console.error("Lỗi từ server:", errorResponse);
+            setSuccessMessage("Đã xảy ra lỗi khi gửi yêu cầu OTP.");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          setSuccessMessage("Đã xảy ra lỗi khi kết nối đến server.");
+        }
+      } else if (activeStep === 3) {
+        try {
+          // Complete booking with OTP
+          const response = await fetch(
+            "http://localhost:8000/api/bookings/complete/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                phone_number: formData.guest_phone,
+                guest_firstname: formData.guest_firstname,
+                guest_lastname: formData.guest_lastname,
+                guest_email: formData.guest_email,
+                otp: formData.otp,
+                check_in_date: formData.check_in_date,
+                check_out_date: formData.check_out_date,
+                room_code: formData.room_code,
+                stay_price: formData.stay_price
+              }),
+            }
+          );
+          console.log(formData);
           if (response.ok) {
             setSuccessMessage("Đặt phòng thành công!");
-            setActiveStep(3); // Chuyển sang bước 4
+
+            // Automatically exit after 3 seconds
+            setTimeout(() => {
+              // Add logic to exit or redirect, e.g.:
+              onExit(); // assuming onExit is a prop passed for exiting
+            }, 1000); // 3000 milliseconds = 3 seconds
           } else {
-            // Xử lý lỗi nếu có
-            setSuccessMessage("Đã xảy ra lỗi khi đặt phòng.");
+            const errorResponse = await response.json();
+            console.error("Lỗi từ server:", errorResponse);
+            setSuccessMessage("Mã OTP không chính xác.");
           }
         } catch (error) {
           console.error("Error:", error);
           setSuccessMessage("Đã xảy ra lỗi khi kết nối đến server.");
         }
       } else {
-        setActiveStep((cur) => cur + 1);
-        setErrors({});
+        setActiveStep((prev) => prev + 1); // Move to next step
       }
     }
   };
 
-  const handlePrev = () => setActiveStep((cur) => cur - 1);
+  const handleBack = () => {
+    setActiveStep((prev) => prev - 1);
+  };
 
-  // Form validation function
   const validateForm = (data) => {
     const errors = {};
-    if (!data.guest_firstname) errors.guest_firstname = "Tên là bắt buộc.";
-    if (!data.guest_lastname) errors.guest_lastname = "Họ là bắt buộc.";
-    if (!data.guest_email) {
-      errors.guest_email = "Email là bắt buộc.";
-    } else if (!/\S+@\S+\.\S+/.test(data.guest_email)) {
-      errors.guest_email = "Email không hợp lệ.";
-    }
-    if (!data.guest_phone) {
-      errors.guest_phone = "Số điện thoại là bắt buộc.";
-    } else if (!/^\d{10}$/.test(data.guest_phone)) {
-      errors.guest_phone = "Số điện thoại phải có 10 chữ số.";
-    }
+
+    if (!data.guest_firstname) errors.guest_firstname = "Họ là bắt buộc!";
+    if (!data.guest_lastname) errors.guest_lastname = "Tên là bắt buộc!";
+    if (!data.guest_email) errors.guest_email = "Email là bắt buộc!";
+    if (!data.guest_phone) errors.guest_phone = "Số điện thoại là bắt buộc!";
+
     return errors;
   };
 
   return (
-    <div className="w-full px-4 sm:px-8 md:px-16 lg:px-32 py-4">
-      <h1 className="text-center font-bold text-3xl pb-12">
-        Thông tin đặt phòng
-      </h1>
-      <Stepper activeStep={activeStep} className="mb-28">
+    <div className="container mx-auto p-4">
+      <Stepper activeStep={activeStep}>
         <StepLabel
-          stepIcon={<UserIcon className="h-5 w-5" />}
-          stepTitle="Bước 1"
-          stepSubTitle="Thông tin cá nhân"
+          stepIcon={<UserIcon className="h-6 w-6" />}
+          stepTitle="Thông tin khách"
+          stepSubTitle="Vui lòng điền thông tin cá nhân"
           isActive={activeStep === 0}
+          onClick={() => setActiveStep(0)}
         />
         <StepLabel
-          stepIcon={<BuildingLibraryIcon className="h-5 w-5" />}
-          stepTitle="Bước 2"
-          stepSubTitle="Xác nhận thông tin"
+          stepIcon={<BuildingLibraryIcon className="h-6 w-6" />}
+          stepTitle="Xác nhận phòng"
+          stepSubTitle="Chọn phòng bạn muốn đặt"
           isActive={activeStep === 1}
+          onClick={() => setActiveStep(1)}
         />
         <StepLabel
-          stepIcon={<BuildingLibraryIcon className="h-5 w-5" />}
-          stepTitle="Bước 3"
-          stepSubTitle="Thông tin thanh toán"
+          stepIcon={<BuildingLibraryIcon className="h-6 w-6" />}
+          stepTitle="Thanh toán"
+          stepSubTitle="Hoàn tất đặt phòng"
           isActive={activeStep === 2}
+          onClick={() => setActiveStep(2)}
         />
         <StepLabel
-          stepIcon={<BuildingLibraryIcon className="h-5 w-5" />}
-          stepTitle="Bước 4"
-          stepSubTitle="Hoàn thành"
+          stepIcon={<BuildingLibraryIcon className="h-6 w-6" />}
+          stepTitle="Xác nhận OTP"
+          stepSubTitle="Nhập mã OTP đã gửi"
           isActive={activeStep === 3}
+          onClick={() => setActiveStep(3)}
         />
       </Stepper>
 
-      <div>
+      <div className="mt-28">
         {activeStep === 0 && (
           <Step1
             formData={formData}
@@ -293,27 +366,27 @@ export function BookingStep({
         )}
         {activeStep === 1 && <Step2 formData={formData} />}
         {activeStep === 2 && <Step3 />}
-        {activeStep === 3 && <Step4 />}
-      </div>
-
-      <div className="flex justify-between mt-6">
-        {activeStep > 0 && (
-          <Button variant="outlined" onClick={handlePrev}>
-            Quay lại
-          </Button>
+        {activeStep === 3 && (
+          <Step4 formData={formData} onChange={handleChange} />
         )}
-        {activeStep < 3 ? (
-          <Button variant="contained" onClick={handleNext}>
-            {activeStep === 2 ? "Đặt phòng" : "Tiếp theo"}
+
+        <div className="mt-6 flex justify-between">
+          {activeStep > 0 && (
+            <Button variant="outlined" onClick={handleBack}>
+              Quay lại
+            </Button>
+          )}
+          <Button onClick={handleNext}>
+            {activeStep === 3 ? "Xác nhận" : "Tiếp theo"}
           </Button>
-        ) : (
-          <Button variant="contained" onClick={onExit}>
-            Đóng
-          </Button>
+        </div>
+
+        {successMessage && (
+          <p className="mt-4 text-green-500">{successMessage}</p>
         )}
       </div>
-
-      {successMessage && <p className="text-green-500">{successMessage}</p>}
     </div>
   );
 }
+
+export default BookingStep;

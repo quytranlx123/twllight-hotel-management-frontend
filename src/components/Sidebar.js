@@ -24,15 +24,13 @@ export function Sidebar({ open, handleOpen, onSelect }) {
   const { handleLogout } = useLogout();
 
   return (
-    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <Card
+      style={{ margin: "0 !important" }}
+      className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5"
+    >
       <div className="mb-2 flex items-center gap-4 p-4">
-        <img
-          src="https://docs.material-tailwind.com/img/logo-ct-dark.png"
-          alt="brand"
-          className="h-8 w-8"
-        />
-        <Typography variant="h5" color="blue-gray">
-          Sidebar
+        <Typography variant="h5" color="blue-gray" className="text-lg mx-auto">
+          TRANG QUẢN TRỊ
         </Typography>
       </div>
       <List>
@@ -95,7 +93,7 @@ export function Sidebar({ open, handleOpen, onSelect }) {
                 </ListItemPrefix>
                 Đã hoàn tiền
               </ListItem>
-              <ListItem onClick={() => onSelect("success")}>
+              <ListItem onClick={() => onSelect("successful")}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
@@ -117,7 +115,7 @@ export function Sidebar({ open, handleOpen, onSelect }) {
             />
           }
         >
-          <ListItem className="p-0" selected={open === 3}>
+          <ListItem className="p-0" selected={open === 2}>
             <AccordionHeader
               onClick={() => handleOpen(3)}
               className="border-b-0 p-3"
@@ -132,7 +130,7 @@ export function Sidebar({ open, handleOpen, onSelect }) {
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0">
-              <ListItem onClick={() => onSelect("salesStats")}>
+              <ListItem onClick={() => onSelect("revenueAnalytics")}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
@@ -160,24 +158,128 @@ export function Sidebar({ open, handleOpen, onSelect }) {
           </AccordionBody>
         </Accordion>
 
-        <hr className="my-2 border-blue-gray-50" />
-        <ListItem>
+        {/* Accordion for Resource Management */}
+        <Accordion
+          open={open === 4}
+          icon={
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${
+                open === 4 ? "rotate-180" : ""
+              }`}
+            />
+          }
+        >
+          <ListItem className="p-0" selected={open === 4}>
+            <AccordionHeader
+              onClick={() => handleOpen(4)}
+              className="border-b-0 p-3"
+            >
+              <ListItemPrefix>
+                <PresentationChartBarIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              <Typography color="blue-gray" className="mr-auto font-normal">
+                Tài nguyên
+              </Typography>
+            </AccordionHeader>
+          </ListItem>
+          <AccordionBody className="py-1">
+            <List className="p-0">
+              <ListItem onClick={() => onSelect("rooms")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Phòng
+              </ListItem>
+              <ListItem onClick={() => onSelect("roomTypes")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Loại phòng
+              </ListItem>
+              <ListItem onClick={() => onSelect("services")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Dịch vụ
+              </ListItem>
+            </List>
+          </AccordionBody>
+        </Accordion>
+
+        {/* New Accordion for User Roles */}
+        <Accordion
+          open={open === 5}
+          icon={
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${
+                open === 5 ? "rotate-180" : ""
+              }`}
+            />
+          }
+        >
+          <ListItem className="p-0" selected={open === 5}>
+            <AccordionHeader
+              onClick={() => handleOpen(5)}
+              className="border-b-0 p-3"
+            >
+              <ListItemPrefix>
+                <PresentationChartBarIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              <Typography color="blue-gray" className="mr-auto font-normal">
+                Người dùng
+              </Typography>
+            </AccordionHeader>
+          </ListItem>
+          <AccordionBody className="py-1">
+            <List className="p-0">
+              <ListItem onClick={() => onSelect("manager")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Quản lý
+              </ListItem>
+              <ListItem onClick={() => onSelect("employee")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Nhân viên
+              </ListItem>
+              <ListItem onClick={() => onSelect("customer")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Khách hàng
+              </ListItem>
+            </List>
+          </AccordionBody>
+        </Accordion>
+
+        {/* Tài khoản - Thay đổi thành ListItem */}
+        <ListItem
+          onClick={() => onSelect("account")}
+          className="flex items-center gap-2 p-3"
+        >
           <ListItemPrefix>
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Profile
+          <Typography color="blue-gray" className="mr-auto font-normal">
+            Tài khoản
+          </Typography>
         </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <Cog6ToothIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Settings
-        </ListItem>
-        <ListItem onClick={handleLogout}>
+
+        {/* Logout Option */}
+        <ListItem
+          onClick={handleLogout}
+          className="flex items-center gap-2 p-3"
+        >
           <ListItemPrefix>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Log Out
+          <Typography color="blue-gray" className="mr-auto font-normal">
+            Đăng xuất
+          </Typography>
         </ListItem>
       </List>
     </Card>

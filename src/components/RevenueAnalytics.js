@@ -12,6 +12,7 @@ const RevenueAnalytics = () => {
             try {
                 const dailyResponse = await axios.get('http://localhost:8000/api/daily/');
                 setDailyRevenue(dailyResponse.data.total_revenue || 0);
+                console.log(dailyRevenue)
                 
                 const monthlyResponse = await axios.get('http://localhost:8000/api/monthly/');
                 setMonthlyRevenue(monthlyResponse.data.total_revenue || 0);

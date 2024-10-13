@@ -28,11 +28,11 @@ const CheckOut = ({ onDateChange }) => {
       <DatePicker
         className="w-full h-full"  // Thêm khoảng cách để tránh chữ đè lên icon
         selected={endDate}              // Ngày đã chọn
-        placeholderText="Chọn ngày check-in"  // Văn bản placeholder
+        placeholderText="Check-out"  // Văn bản placeholder
         onChange={handleChange}           // Hàm xử lý khi ngày thay đổi
         minDate={new Date()}           // Giới hạn chỉ cho phép chọn ngày hiện tại và tương lai
         dateFormat="dd/MM/yyyy"           // Định dạng hiển thị ngày
-        aria-label="Ngày check-out"        // Nhãn truy cập cho người dùng công cụ hỗ trợ
+        aria-label="Check-out"        // Nhãn truy cập cho người dùng công cụ hỗ trợ
       />
     </div>
   );

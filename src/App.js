@@ -1,10 +1,10 @@
 import React from "react";
 // components
 import Layout from "./components/Layout";
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from "./context/AuthContext";
 
 // pages
-import Home from "./pages/Home"
+import Home from "./pages/Home";
 import RoomDetails from "./pages/RoomDetails";
 import Login from "./pages/Login";
 
@@ -13,8 +13,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
 import UserProfile from "./pages/UserProfile";
 import { Dashboard } from "./pages/Dashboard";
+import ForgotPasswordForm from "./components/ForgotPasswordForm";
+import VerifyOTPForm from "./components/VerifyOtpPassword";
 //test
 import PaymentSuccess from "./pages/PaymentSuccess";
+import CustomerDashBoard from "./pages/CustomerDashBoard";
 
 const router = createBrowserRouter([
   {
@@ -37,20 +40,31 @@ const router = createBrowserRouter([
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
   {
     path: "/user",
-    element: <UserProfile />
+    element: <UserProfile />,
   },
   {
     path: "/dashboard",
-    element: <Dashboard />
-  }
-  ,
+    element: <Dashboard />,
+  },
   {
     path: "/payment-success",
-    element: <PaymentSuccess />
+    element: <PaymentSuccess />,
+  },
+  {
+    path: "/customerdashboard",
+    element: <CustomerDashBoard />,
+  },
+  {
+    path: "/forgot",
+    element: <ForgotPasswordForm />,
+  },
+  {
+    path:"/verify-otp" ,
+    element: <VerifyOTPForm />
   }
 ]);
 
@@ -58,7 +72,7 @@ const App = () => {
   return (
     <div>
       <AuthProvider>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
       </AuthProvider>
     </div>
   );
