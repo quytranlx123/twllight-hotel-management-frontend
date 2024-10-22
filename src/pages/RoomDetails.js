@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 //components
 import AdultsDropdown from "../components/AdultsDropdown";
@@ -15,6 +15,7 @@ import { BookingStep } from "../components/BookingStep";
 //FormatDate
 import { formatDateToDDMMYYYY } from "../Recycle_Function/FormantDateToDDMMYYYY";
 
+
 const RoomDetails = () => {
   const { rooms } = useContext(RoomContext);
   const { id } = useParams();
@@ -23,6 +24,7 @@ const RoomDetails = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  
   if (!rooms || rooms.length === 0) {
     return <></>;
   }
@@ -106,7 +108,6 @@ const RoomDetails = () => {
             <div className="w-full h-full lg:w-[40%]">
               <div className="py-8 px-6 bg-accent/20 mb-12">
                 <div className="flex flex-col space-y-4 mb-4">
-                  <h3 className="font-serif">Đặt phòng của bạn</h3>
                   <div className="h-[60px]">
                     <CheckIn onDateChange={handleCheckInChange} />
                   </div>

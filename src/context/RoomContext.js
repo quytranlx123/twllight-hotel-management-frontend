@@ -9,6 +9,7 @@ import {
   FaStopwatch,
   FaCocktail,
 } from "react-icons/fa";
+import backendUrl from "../config";
 
 export const RoomContext = createContext();
 
@@ -24,7 +25,7 @@ const RoomProvider = ({ children }) => {
   useEffect(() => {
     const fetchRoomData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/roomtypes/"); // Thay thế với URL của bạn
+        const response = await fetch(`${backendUrl}/roomtypes/`); // Thay thế với URL của bạn
         const apiData = await response.json();
 
         // Định dạng dữ liệu

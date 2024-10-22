@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import backendUrl from "../config";
 
 const AvailableRooms = ({ roomType, onSelectRoom }) => {
   const [rooms, setRooms] = useState([]);
@@ -9,7 +10,7 @@ const AvailableRooms = ({ roomType, onSelectRoom }) => {
     const fetchRooms = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/rooms_with_roomtype/?room_type=${roomType}`
+          `${backendUrl}/rooms_with_roomtype/?room_type=${roomType}`
         );
         setRooms(response.data);
       } catch (error) {
@@ -59,8 +60,8 @@ const AvailableRooms = ({ roomType, onSelectRoom }) => {
                   className={`p-4 border rounded-lg cursor-pointer ${
                     room.is_available
                       ? selectedRoom === room.id // Sử dụng ID thay vì tên
-                        ? "bg-green-500" // Nếu phòng đã được chọn, dùng màu xanh lá
-                        : "bg-pink-300 hover:bg-pink-400" // Màu nền phòng có sẵn
+                        ? "bg-pink-300" // Nếu phòng đã được chọn, dùng màu xanh lá
+                        : "bg-green-400 hover:bg-green-600" // Màu nền phòng có sẵn
                       : "bg-gray-300 cursor-not-allowed" // Màu nền phòng không có sẵn
                   }`}
                   onClick={() => {
@@ -71,11 +72,11 @@ const AvailableRooms = ({ roomType, onSelectRoom }) => {
                     }
                   }}
                 >
-                  <h3 className="text-lg font-semibold">{room.name}</h3>
+                  <h3 className="text-lg font-semibold text-center">{room.name}</h3>
                   {room.is_available ? (
-                    <span className="text-green-700">Có sẵn</span>
+                    <span className="text-white text-center">Có sẵn</span>
                   ) : (
-                    <span className="text-red-700">Không có sẵn</span>
+                    <span className="text-red-700 text-center">Không có sẵn</span>
                   )}
                 </div>
               ))}

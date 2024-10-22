@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../Recycle_Function/Login";
-
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +14,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const result = await login(username, password, navigate);
+    const result = await login(username, password, navigate); // Đảm bảo fetchUser được truyền vào
 
     // Kiểm tra kết quả trả về từ hàm login
     if (!result.success) {
@@ -64,14 +63,20 @@ const LoginForm = () => {
             Login
           </button>
           <p className="pb-4 pt-1 flex justify-end">
-            <a href="/forgot" className=" text-sm text-gray-200 hover:text-blue-300">
+            <a
+              href="/forgot"
+              className=" text-sm text-gray-200 hover:text-blue-300"
+            >
               Quên mật khẩu
             </a>
           </p>
           <p className="text-center text-sm text-gray-200">
-            Chưa có tài khoản? 
-            <a href="/register" className=" text-sm text-gray-200 hover:text-blue-300">
-               Đăng kí
+            Chưa có tài khoản?
+            <a
+              href="/register"
+              className=" text-sm text-gray-200 hover:text-blue-300"
+            >
+              Đăng kí
             </a>
           </p>
         </form>

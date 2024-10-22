@@ -61,31 +61,65 @@ export function Sidebar({ open, handleOpen, onSelect }) {
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0">
-              <ListItem onClick={() => onSelect("pending", "awaiting_payment")}>
+              <ListItem onClick={() => onSelect("pending")}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
                 Chờ xử lý
               </ListItem>
-              <ListItem onClick={() => onSelect("confirmed", "amended")}>
+              <ListItem onClick={() => onSelect("confirmed")}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Đã xác nhận / sửa đổi
+                Đã xác nhận
               </ListItem>
-              <ListItem onClick={() => onSelect("checked_in", "checked_out")}>
+              <ListItem onClick={() => onSelect("amended")}>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Lưu trú
+                Đã sửa đổi
+              </ListItem>
+              <ListItem onClick={() => onSelect("checked_in")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Check-in
+              </ListItem>
+              <ListItem onClick={() => onSelect("checked_out")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Check-out
+              </ListItem>
+              <ListItem onClick={() => onSelect("awaiting_payment")}>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Chờ thanh toán
               </ListItem>
               <ListItem
-                onClick={() => onSelect("failed", "no_show", "cancelled")}
+                onClick={() => onSelect("no_show")}
+              >
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Không đến
+              </ListItem>
+              <ListItem
+                onClick={() => onSelect("failed")}
               >
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
                 Thất bại
+              </ListItem>
+              <ListItem
+                onClick={() => onSelect("cancelled")}
+              >
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                Đã huỷ
               </ListItem>
               <ListItem onClick={() => onSelect("refunded")}>
                 <ListItemPrefix>

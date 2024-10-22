@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AddRoomForm from './AddRoomForm';
+import backendUrl from '../config';
 const RoomList = () => {
   const [rooms, setRooms] = useState([]);
 
   const fetchRooms = async () => {
-    const response = await axios.get('http://localhost:8000/api/rooms/');
+    const response = await axios.get(`${backendUrl}/rooms/`);
     setRooms(response.data);
   };
 

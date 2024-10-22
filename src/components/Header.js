@@ -64,7 +64,7 @@ const Header = () => {
     <header
       className={`${
         header ? "bg-white py-3 my-1 shadow-lg" : "bg-transparent py-2"
-      } fixed z-50 w-full transition-all duration-500`}
+      } fixed z-50 w-full transition-all duration-500z`}
     >
       <div className="container mx-auto flex flex-col items-center gap-y-6 lg:flex-row lg:justify-between lg:gap-y-0">
         {/* Logo */}

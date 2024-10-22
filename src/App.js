@@ -1,7 +1,7 @@
 import React from "react";
 // components
 import Layout from "./components/Layout";
-import { AuthProvider } from "./context/AuthContext";
+import { CustomerProvider } from "./context/CustomerContext";
 
 // pages
 import Home from "./pages/Home";
@@ -16,7 +16,6 @@ import { Dashboard } from "./pages/Dashboard";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 import VerifyOTPForm from "./components/VerifyOtpPassword";
 //test
-import PaymentSuccess from "./pages/PaymentSuccess";
 import CustomerDashBoard from "./pages/CustomerDashBoard";
 
 const router = createBrowserRouter([
@@ -51,10 +50,6 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/payment-success",
-    element: <PaymentSuccess />,
-  },
-  {
     path: "/customerdashboard",
     element: <CustomerDashBoard />,
   },
@@ -63,17 +58,17 @@ const router = createBrowserRouter([
     element: <ForgotPasswordForm />,
   },
   {
-    path:"/verify-otp" ,
-    element: <VerifyOTPForm />
-  }
+    path: "/verify-otp",
+    element: <VerifyOTPForm />,
+  },
 ]);
 
 const App = () => {
   return (
     <div>
-      <AuthProvider>
+      <CustomerProvider>
         <RouterProvider router={router} />
-      </AuthProvider>
+      </CustomerProvider>
     </div>
   );
 };

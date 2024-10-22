@@ -20,7 +20,7 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --host 0.0.0.0",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -48,6 +48,7 @@
     "@types/react-datepicker": "^7.0.0",
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.20",
+    "html-loader": "^5.1.0",
     "postcss": "^8.4.47",
     "react-datepicker": "^4.8.0",
     "react-icons": "^4.7.1",

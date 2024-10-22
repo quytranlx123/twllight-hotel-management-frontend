@@ -1,7 +1,7 @@
 // useLogout.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-
+import backendUrl from "../config";
 const useLogout = () => {
   const [isOpen, setIsOpen] = useState(true); // State để quản lý việc mở menu
   const navigate = useNavigate(); // Khởi tạo useNavigate
@@ -18,7 +18,7 @@ const useLogout = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/users/logout/", {
+      const response = await fetch(`${backendUrl}/users/logout/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

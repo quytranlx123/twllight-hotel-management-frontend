@@ -5,36 +5,18 @@ import RevenueAnalytics from "../components/RevenueAnalytics";
 import * as XLSX from "xlsx";
 import RoomTypeManagement from "./RoomTypeManagement";
 import RoomManagement from "./RoomManagement";
-import { UserContext } from "../context/UserContext";
+import { ListUserContext } from "../context/ListUserContext";
 import UserList from "./UserList";
 import AccountManagement from "./AccountManagement";
 
 export function MainContentDashBoard({ statuses }) {
-  const bookings = useContext(BookingContext);
-  const users = useContext(UserContext);
+  const { bookings, fetchBookings } = useContext(BookingContext);
+  const users = useContext(ListUserContext);
 
-  // Lọc bookings theo trạng thái mà người dùng đã chọn
   const filteredBookings = statuses.length
     ? bookings.filter((booking) => statuses.includes(booking.status))
     : bookings;
 
-  const showBookingList =
-    statuses.includes("pending") ||
-    statuses.includes("confirmed") ||
-    statuses.includes("amended") ||
-    statuses.includes("checked_in") ||
-    statuses.includes("checked_out") ||
-    statuses.some((status) =>
-      ["failed", "no_show", "cancelled", "refunded", "successful"].includes(
-        status
-      )
-    );
-
-  const showUserList =
-    statuses.includes("admin") ||
-    statuses.includes("employee") ||
-    statuses.includes("manager") ||
-    statuses.includes("customer");
   const filteredUsers = statuses.length
     ? users.filter((user) => statuses.includes(user.role))
     : users;
@@ -44,27 +26,45 @@ export function MainContentDashBoard({ statuses }) {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Bookings");
 
-    // Lấy thời gian hiện tại và định dạng
     const now = new Date();
-    const formattedDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
-    const formattedTime = now.toTimeString().slice(0, 5).replace(":", "-"); // HH-MM
-    const filename = `Bookings_${formattedDate}_${formattedTime}.xlsx`;
-
-    // Xuất file
+    const filename = `Bookings_${now.toISOString().slice(0, 10)}_${now
+      .toTimeString()
+      .slice(0, 5)
+      .replace(":", "-")}.xlsx`;
     XLSX.writeFile(wb, filename);
   };
 
+  const showBookingList = [
+    "pending",
+    "confirmed",
+    "amended",
+    "checked_in",
+    "checked_out",
+    "cancelled",
+    "refunded",
+    "failed",
+    "no_show",
+    "awaiting_payment",
+    "successful",
+    "no_show"
+  ].some((status) => statuses.includes(status));
+  const showUserList = ["admin", "employee", "manager", "customer"].some(
+    (role) => statuses.includes(role)
+  );
+
   return (
     <div>
-      {/* Nút xuất Excel */}
       {showBookingList && (
         <button className="bg-green-300 w-1/6" onClick={exportToExcel}>
           Xuất Excel
         </button>
       )}
-      {/* Hiển thị BookingList với danh sách đã được lọc */}
       {showBookingList ? (
-        <BookingList bookings={filteredBookings} />
+        <BookingList
+          bookings={filteredBookings}
+          value={bookings}
+          fetchBookings={fetchBookings}
+        />
       ) : showUserList ? (
         <UserList users={filteredUsers} />
       ) : statuses.includes("revenueAnalytics") ? (
@@ -75,7 +75,7 @@ export function MainContentDashBoard({ statuses }) {
         <RoomManagement />
       ) : statuses.includes("account") ? (
         <AccountManagement />
-      ) :null}
+      ) : null}
     </div>
   );
 }

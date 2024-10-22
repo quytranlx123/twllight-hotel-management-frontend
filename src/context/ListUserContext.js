@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
 
 // Create context
-export const UserContext = createContext();
+export const ListUserContext = createContext();
 
-export const UserProvider = ({ children }) => {
+export const ListUserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -21,8 +21,8 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={users}>
+    <ListUserContext.Provider value={users}>
       {children}
-    </UserContext.Provider>
+    </ListUserContext.Provider>
   );
 };
